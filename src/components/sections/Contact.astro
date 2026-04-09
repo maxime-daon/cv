@@ -1,0 +1,33 @@
+---
+import Button from "@components/ui/Button.astro"
+---
+
+<section id="contact" class="py-20 md:py-28">
+  <div class="mx-auto max-w-(--container-max) px-6">
+    <div class="mx-auto max-w-xl text-center">
+      {/* EDIT: contact title */}
+      <h2 class="text-3xl font-semibold tracking-tight text-(--color-text-primary) md:text-4xl">
+        Travaillons ensemble.
+      </h2>
+
+      {/* EDIT: contact subtitle */}
+      <p class="mt-4 text-lg text-(--color-text-secondary)">
+        Une mission freelance, un projet Webflow, une question sur votre trafic ? Je lis tous mes
+        messages.
+      </p>
+
+      {/* EDIT: email address */}
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <Button href="mailto:daon.maxime@gmail.com" variant="primary">
+          <span class="break-all">daon.maxime@gmail.com</span>
+        </Button>
+        <Button href="https://linkedin.com/in/maximedaon" variant="ghost" external={true}>
+          LinkedIn
+        </Button>
+        <Button href="https://github.com/maxime-daon" variant="ghost" external={true}>
+          GitHub
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>

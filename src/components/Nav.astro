@@ -1,0 +1,149 @@
+---
+import { SITE } from "@config/site"
+import { NAV_LINKS } from "@config/nav"
+import { cn } from "@lib/utils"
+
+const currentPath = Astro.url.pathname
+---
+
+<header class="sticky top-0 z-50 border-b border-(--color-border) bg-(--color-bg)/90 backdrop-blur-sm">
+  <nav
+    aria-label="Navigation principale"
+    class="mx-auto flex max-w-(--container-max) items-center justify-between px-6 py-3"
+  >
+    {/* Logo */}
+    <a
+      href="/"
+      class="text-(--color-text-primary) transition-opacity hover:opacity-80"
+      style="font-family: var(--font-display); font-style: italic; font-size: 1.25rem;"
+    >
+      {SITE.name}
+    </a>
+
+    {/* Desktop nav */}
+    <ul class="hidden items-center gap-1 md:flex">
+      {NAV_LINKS.map((link) => {
+        const isActive =
+          currentPath === link.href ||
+          (link.href !== "/" && currentPath.startsWith(link.href))
+
+        return (
+          <li>
+            <a
+              href={link.href}
+              class={cn(
+                "nav-link relative inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium tracking-[0.02em] transition-all duration-200 hover:bg-(--color-bg-secondary) hover:text-(--color-accent) hover:underline hover:decoration-(--color-accent) hover:underline-offset-4",
+                
+              )}
+              aria-current={isActive ? "page" : undefined}
+            >
+              {link.label}
+            </a>
+          </li>
+        )
+      })}
+    </ul>
+
+    {/* Disponible badge */}
+    <div class="hidden items-center gap-2 md:flex">
+      <span class="flex items-center gap-1.5 rounded-full border border-(--color-accent-muted) bg-(--color-accent-light) px-3 py-1 text-xs font-medium text-(--color-accent)">
+        <span
+          class="h-1.5 w-1.5 rounded-full bg-(--color-accent)"
+          style="animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;"
+          aria-hidden="true"
+        ></span>
+        Disponible
+      </span>
+    </div>
+
+    {/* Mobile toggle */}
+    <button
+      type="button"
+      id="mobile-menu-toggle"
+      class="relative h-10 w-10 rounded-md transition-colors duration-200 hover:bg-(--color-bg-secondary) md:hidden"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Ouvrir le menu"
+    >
+      <span class="hamburger-line absolute left-2.5 top-3.25 h-0.5 w-5 rounded-full bg-current transition-all duration-300"></span>
+      <span class="hamburger-line absolute left-2.5 top-4.75 h-0.5 w-5 rounded-full bg-current transition-all duration-300"></span>
+      <span class="hamburger-line absolute left-2.5 top-6.25 h-0.5 w-5 rounded-full bg-current transition-all duration-300"></span>
+    </button>
+  </nav>
+
+  {/* Mobile menu */}
+  <div
+    id="mobile-menu"
+    class="mobile-menu max-h-0 overflow-hidden transition-[max-height] duration-300 ease-in-out md:hidden"
+  >
+    <ul class="space-y-0.5 border-t border-(--color-border) px-4 py-3">
+      {NAV_LINKS.map((link) => {
+        const isActive =
+          currentPath === link.href ||
+          (link.href !== "/" && currentPath.startsWith(link.href))
+        return (
+          <li>
+            <a
+              href={link.href}
+              class={cn(
+                "block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-150 hover:bg-(--color-bg-secondary)",
+               
+              )}
+              aria-current={isActive ? "page" : undefined}
+            >
+              {link.label}
+            </a>
+          </li>
+        )
+      })}
+    </ul>
+  </div>
+</header>
+
+<style>
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
+  }
+
+  [aria-expanded="true"] .hamburger-line:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  [aria-expanded="true"] .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  [aria-expanded="true"] .hamburger-line:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+</style>
+
+<script>
+  function initNav() {
+    const toggle = document.getElementById("mobile-menu-toggle")
+    const menu = document.getElementById("mobile-menu")
+
+    toggle?.addEventListener("click", () => {
+      const isOpen = toggle.getAttribute("aria-expanded") === "true"
+      toggle.setAttribute("aria-expanded", String(!isOpen))
+      toggle.setAttribute("aria-label", !isOpen ? "Fermer le menu" : "Ouvrir le menu")
+      if (menu) {
+        menu.style.maxHeight = !isOpen ? menu.scrollHeight + "px" : "0"
+      }
+    })
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && toggle?.getAttribute("aria-expanded") === "true") {
+        toggle.click()
+      }
+    })
+  }
+
+  initNav()
+  document.addEventListener("astro:after-swap", initNav)
+</script>

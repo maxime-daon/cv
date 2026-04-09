@@ -1,0 +1,54 @@
+---
+import { cn } from "@lib/utils"
+
+interface Props {
+  variant?: "primary" | "secondary" | "ghost"
+  size?: "sm" | "md" | "lg"
+  href?: string
+  external?: boolean
+  class?: string
+  type?: "button" | "submit" | "reset"
+  [key: string]: unknown
+}
+
+const {
+  variant = "primary",
+  size = "md",
+  href,
+  external = false,
+  class: className,
+  ...rest
+} = Astro.props
+
+const variants = {
+  primary: "btn-primary bg-(--color-accent) text-white hover:bg-(--color-accent-hover)",
+  secondary: "border border-(--color-accent) text-(--color-accent) hover:bg-(--color-accent-light)",
+  ghost: "border-[1.5px] border-(--color-border-strong) text-(--color-text-primary) hover:bg-(--color-bg-secondary)",
+}
+
+const sizes = {
+  sm: "px-3 py-1.5 text-sm",
+  md: "px-5 py-2.5 text-sm font-medium",
+  lg: "px-7 py-3.5 text-base",
+}
+
+const classes = cn(
+  "inline-flex items-center justify-center font-medium transition-all rounded-(--radius-full)",
+  variants[variant],
+  sizes[size],
+  className,
+)
+
+const Tag = href ? "a" : "button"
+const externalProps = external ? { target: "_blank", rel: "noopener noreferrer" } : {}
+---
+
+<Tag href={href} class={classes} {...externalProps} {...rest}>
+  <slot />
+</Tag>
+
+<style>
+  .btn-primary:hover :global(.arrow) {
+    transform: rotate(-12deg);
+  }
+</style>

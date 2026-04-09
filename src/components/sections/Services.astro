@@ -1,0 +1,44 @@
+---
+import SectionTitle from "@components/ui/SectionTitle.astro"
+import { services } from "@config/services"
+---
+
+<section id="services" class="py-20 md:py-28 bg-(--color-bg-secondary)">
+  <div class="mx-auto max-w-(--container-max) px-6">
+    <SectionTitle
+      title="Services"
+      subtitle="Propositions adaptées aux indépendants, artisans et PME."
+    />
+
+    <div class="grid gap-6 md:grid-cols-2">
+      {services.map((service) => (
+        <div class="flex flex-col gap-4 rounded-lg border border-(--color-border) bg-(--color-surface) p-6">
+          {/* Icon + title */}
+          <div class="flex items-center gap-3">
+            <span class="text-2xl leading-none" aria-hidden="true">{service.icon}</span>
+            <h3 class="text-lg font-semibold text-(--color-text-primary)">
+              {/* EDIT: service title */}
+              {service.title}
+            </h3>
+          </div>
+
+          {/* Description */}
+          <p class="text-sm leading-relaxed text-(--color-text-secondary)">
+            {/* EDIT: service description */}
+            {service.description}
+          </p>
+
+          {/* Deliverables */}
+          <ul class="flex flex-col gap-1.5">
+            {service.deliverables.map((item) => (
+              <li class="flex items-center gap-2 text-sm text-(--color-text-secondary)">
+                <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-(--color-accent)" aria-hidden="true" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

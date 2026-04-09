@@ -1,0 +1,16 @@
+---
+import { Image } from "astro:assets"
+import type { ComponentProps } from "astro/types"
+
+interface Props extends Omit<ComponentProps<typeof Image>, "loading" | "fetchpriority"> {
+  priority?: boolean
+}
+
+const { priority = false, ...rest } = Astro.props
+---
+
+<Image
+  loading={priority ? "eager" : "lazy"}
+  fetchpriority={priority ? "high" : undefined}
+  {...rest}
+/>

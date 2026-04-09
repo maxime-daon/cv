@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://monsite.fr/sitemap-index.xml
+# Remplacer l'URL ci-dessus par la valeur de SITE.url dans src/config/site.ts

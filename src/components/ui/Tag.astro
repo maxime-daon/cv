@@ -1,0 +1,17 @@
+---
+interface Props {
+  label: string
+  variant?: "default" | "accent"
+}
+
+const { label, variant = "default" } = Astro.props
+
+const variants = {
+  default: "bg-(--color-tag-bg) text-(--color-tag-text)",
+  accent: "bg-(--color-accent-light) text-(--color-accent)",
+}
+---
+
+<span class:list={["inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium", variants[variant]]}>
+  {label}
+</span>

@@ -1,0 +1,57 @@
+---
+import { Ripple } from "../components/ui/ripple"
+import Button from "@components/ui/Button.astro"
+---
+
+<section class="py-32 relative md:py-40">
+  <Ripple client:load/>
+  <div class="mx-auto max-w-(--container-max) px-6 text-center">
+    <div class="mx-auto max-w-2xl">
+      {/* EDIT: eyebrow */}
+      <p class="mb-6 inline-flex items-center gap-2 rounded-full border border-(--color-accent-muted) bg-(--color-accent-light) px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-(--color-accent)">
+        <span
+          class="h-1.5 w-1.5 rounded-full bg-(--color-accent)"
+          style="animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;"
+          aria-hidden="true"
+        ></span>
+        Développeur Webflow · Traffic Manager
+      </p>
+
+      {/* EDIT: headline */}
+      <h1
+        data-anim="mask"
+        class="text-(--color-text-primary) font-normal"
+        style="font-family: var(--font-display); font-size: clamp(2.8rem, 5vw, 4.5rem); line-height: 1.1; letter-spacing: -0.01em;"
+      >
+        Je construis des sites <em class="text-gradient-fresh font-light" style="font-style: italic;">qui performent.</em>
+      </h1>
+
+      {/* EDIT: subheadline */}
+      <p class="mx-auto mt-6 max-w-xl text-lg text-(--color-text-secondary)">
+        Freelance disponible pour vos projets Webflow, SEO et Google Ads.
+      </p>
+
+      {/* CTAs */}
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <Button href="/#projets" variant="primary">Voir mes projets ↓</Button>
+        <Button href="/#contact" variant="ghost">Me contacter</Button>
+      </div>
+
+      {/* EDIT: stats */}
+      <p class="mt-12 flex flex-wrap items-center justify-center gap-x-1 gap-y-1 text-sm text-(--color-text-muted)">
+        <span class="whitespace-nowrap">20+ projets</span>
+        <span class="mx-2" aria-hidden="true">·</span>
+        <span class="whitespace-nowrap">2 ans d'expérience</span>
+        <span class="mx-2" aria-hidden="true">·</span>
+        <span class="whitespace-nowrap">Remote-friendly</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+</style>

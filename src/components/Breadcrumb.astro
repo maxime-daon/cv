@@ -1,0 +1,33 @@
+---
+import type { BreadcrumbItem } from "@types/index"
+import JsonLd from "@components/seo/JsonLd.astro"
+import { buildBreadcrumb } from "@lib/schema"
+
+interface Props {
+  items: BreadcrumbItem[]
+}
+
+const { items } = Astro.props
+const allItems = [{ name: "Accueil", href: "/" }, ...items]
+---
+
+<JsonLd schema={buildBreadcrumb(allItems)} />
+
+<nav aria-label="Fil d'Ariane" class="mb-6">
+  <ol class="flex flex-wrap items-center gap-1 text-sm text-gray-600">
+    {allItems.map((item, index) => (
+      <li class="flex items-center gap-1">
+        {index > 0 && <span aria-hidden="true">/</span>}
+        {index === allItems.length - 1 ? (
+          <span aria-current="page" class="font-medium text-[var(--color-text)]">
+            {item.name}
+          </span>
+        ) : (
+          <a href={item.href} class="transition-colors hover:text-[var(--color-primary)]">
+            {item.name}
+          </a>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>

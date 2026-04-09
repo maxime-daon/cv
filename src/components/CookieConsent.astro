@@ -1,0 +1,224 @@
+---
+// CookieConsent — RGPD + Google Consent Mode V2 via GTM
+// Renseigner PUBLIC_GTM_ID dans .env (ex: GTM-XXXXXXX)
+const GTM_ID = import.meta.env.PUBLIC_GTM_ID ?? ""
+---
+
+{GTM_ID && (
+  <>
+    {/*
+      1. Consent Mode V2 — defaults AVANT le snippet GTM
+         GTM lit ces valeurs au démarrage pour toutes ses balises
+    */}
+    <script>
+      window.dataLayer = window.dataLayer || []
+      window.dataLayer.push({
+        event: 'default_consent',
+        analytics_storage:  'denied',
+        ad_storage:         'denied',
+        ad_user_data:       'denied',
+        ad_personalization: 'denied',
+        wait_for_update:    500,
+      })
+    </script>
+
+    {/* 2. Snippet GTM standard */}
+    <script is:inline define:vars={{ GTM_ID }}>
+      ;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer',GTM_ID)
+    </script>
+  </>
+)}
+
+<script>
+  import * as CookieConsent from "vanilla-cookieconsent"
+  import "vanilla-cookieconsent/dist/cookieconsent.css"
+
+  function updateConsentMode(cookie: ReturnType<typeof CookieConsent.getCookie>) {
+    if (typeof window.gtag !== "function") return
+
+    const analytics = CookieConsent.acceptedCategory("analytics")
+    const marketing = CookieConsent.acceptedCategory("marketing")
+
+    window.gtag("consent", "update", {
+      analytics_storage:  analytics ? "granted" : "denied",
+      ad_storage:         marketing ? "granted" : "denied",
+      ad_user_data:       marketing ? "granted" : "denied",
+      ad_personalization: marketing ? "granted" : "denied",
+    })
+  }
+
+  CookieConsent.run({
+
+    // Stockage du consentement
+    cookie: {
+      name: "cc_cookie",
+      expiresAfterDays: 182,
+      sameSite: "Strict",
+    },
+
+    // UI
+    guiOptions: {
+      consentModal: {
+        layout: "box",
+        position: "bottom left",
+        equalWeightButtons: false,
+        flipButtons: false,
+      },
+      preferencesModal: {
+        layout: "box",
+        position: "right",
+        equalWeightButtons: true,
+        flipButtons: false,
+      },
+    },
+
+    // Catégories
+    categories: {
+      necessary: {
+        enabled: true,
+        readOnly: true,
+      },
+      analytics: {
+        enabled: false,
+        autoClear: {
+          cookies: [
+            { name: /^(_ga|_gid|_gat)/ },
+          ],
+        },
+      },
+      marketing: {
+        enabled: false,
+        autoClear: {
+          cookies: [
+            { name: /^(_gcl|_fbp|_fbc)/ },
+          ],
+        },
+      },
+    },
+
+    // Callbacks Consent Mode V2
+    onConsent: ({ cookie }) => updateConsentMode(cookie),
+    onChange:  ({ cookie }) => updateConsentMode(cookie),
+
+    // Traductions FR
+    language: {
+      default: "fr",
+      translations: {
+        fr: {
+          consentModal: {
+            title: "Nous utilisons des cookies",
+            description:
+              "Ce site utilise des cookies pour améliorer votre expérience et mesurer l'audience. Vous pouvez accepter, refuser ou personnaliser vos choix à tout moment.",
+            acceptAllBtn: "Tout accepter",
+            acceptNecessaryBtn: "Tout refuser",
+            showPreferencesBtn: "Personnaliser",
+            footer: `<a href="/politique-de-confidentialite">Politique de confidentialité</a> · <a href="/mentions-legales">Mentions légales</a>`,
+          },
+          preferencesModal: {
+            title: "Préférences de cookies",
+            acceptAllBtn: "Tout accepter",
+            acceptNecessaryBtn: "Tout refuser",
+            savePreferencesBtn: "Enregistrer mes choix",
+            closeIconLabel: "Fermer",
+            serviceCounterLabel: "Service|Services",
+            sections: [
+              {
+                title: "Votre vie privée",
+                description:
+                  "Ce site respecte votre vie privée conformément au RGPD. Vous pouvez choisir les catégories de cookies que vous autorisez.",
+              },
+              {
+                title: "Cookies strictement nécessaires",
+                description:
+                  "Ces cookies sont indispensables au fonctionnement du site et ne peuvent pas être désactivés.",
+                linkedCategory: "necessary",
+              },
+              {
+                title: "Cookies analytiques",
+                description:
+                  "Ces cookies nous permettent de mesurer l'audience du site (pages vues, temps passé…) afin d'améliorer son contenu. Les données sont anonymisées.",
+                linkedCategory: "analytics",
+              },
+              {
+                title: "Cookies marketing",
+                description:
+                  "Ces cookies sont utilisés pour vous proposer des publicités personnalisées sur d'autres sites.",
+                linkedCategory: "marketing",
+              },
+              {
+                title: "Plus d'informations",
+                description:
+                  'Pour toute question, <a href="mailto:hello@maxime-daon.fr">contactez-moi</a>.',
+              },
+            ],
+          },
+        },
+      },
+    },
+  })
+</script>
+
+<style is:global>
+  /* Thème cookie consent — aligné sur le design system */
+  :root {
+    --cc-font-family: var(--font-sans, system-ui, sans-serif);
+    --cc-modal-border-radius: var(--radius-lg, 16px);
+    --cc-btn-border-radius: var(--radius-md, 10px);
+    --cc-modal-transition-duration: 0.2s;
+
+    /* Couleurs claires */
+    --cc-bg: #ffffff;
+    --cc-primary-color: #1a1a18;
+    --cc-secondary-color: #6b6b65;
+
+    --cc-btn-primary-bg: #3DA35D;
+    --cc-btn-primary-color: #ffffff;
+    --cc-btn-primary-hover-bg: #2E8A4A;
+
+    --cc-btn-secondary-bg: #f3f2ef;
+    --cc-btn-secondary-color: #1a1a18;
+    --cc-btn-secondary-hover-bg: #e5e4e0;
+
+    --cc-toggle-on-bg: #3DA35D;
+    --cc-toggle-off-bg: #c8c7c2;
+    --cc-toggle-readonly-bg: #b6dfc4;
+
+    --cc-separator-border-color: #e5e4e0;
+    --cc-overlay-bg: rgba(0, 0, 0, 0.45);
+    --cc-cookie-category-block-bg: #f3f2ef;
+    --cc-cookie-category-block-border: #e5e4e0;
+    --cc-cookie-category-block-hover-bg: #ebe9e4;
+
+    --cc-z-index: 9999;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --cc-bg: #1c1c1a;
+      --cc-primary-color: #f0efeb;
+      --cc-secondary-color: #9c9c96;
+
+      --cc-btn-primary-bg: #4ac97a;
+      --cc-btn-primary-color: #111110;
+      --cc-btn-primary-hover-bg: #3DA35D;
+
+      --cc-btn-secondary-bg: #2a2a27;
+      --cc-btn-secondary-color: #f0efeb;
+      --cc-btn-secondary-hover-bg: #3a3a36;
+
+      --cc-toggle-on-bg: #4ac97a;
+      --cc-toggle-off-bg: #4a4a46;
+      --cc-toggle-readonly-bg: #1e5c34;
+
+      --cc-separator-border-color: #2e2e2b;
+      --cc-overlay-bg: rgba(0, 0, 0, 0.65);
+      --cc-cookie-category-block-bg: #2a2a27;
+      --cc-cookie-category-block-border: #2e2e2b;
+      --cc-cookie-category-block-hover-bg: #333330;
+    }
+  }
+</style>

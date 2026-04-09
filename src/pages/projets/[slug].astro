@@ -1,0 +1,115 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro"
+import Tag from "@components/ui/Tag.astro"
+import Button from "@components/ui/Button.astro"
+import ProjectCard from "@components/ui/ProjectCard.astro"
+import { projects } from "@config/projects"
+import type { Project } from "../../types/index"
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }))
+}
+
+interface Props {
+  project: Project
+}
+
+const { project } = Astro.props
+
+// Other projects (up to 3, excluding current)
+const otherProjects = projects.filter((p) => p.slug !== project.slug).slice(0, 3)
+---
+
+<BaseLayout title={project.title} description={project.description}>
+  <div class="mx-auto max-w-(--container-max) px-6 py-12 md:py-16">
+    {/* Back link */}
+    <a
+      href="/#projets"
+      class="mb-8 inline-flex items-center gap-1 text-sm text-(--color-text-muted) transition-colors hover:text-(--color-text-primary)"
+    >
+      ← Retour aux projets
+    </a>
+
+    {/* Hero */}
+    <header class="mb-10">
+      <div class="mb-4 flex flex-wrap items-center gap-3">
+        <span class="text-sm text-(--color-text-muted)">{project.client}</span>
+        <span class="text-(--color-border-strong)">·</span>
+        <span class="text-sm text-(--color-text-muted)">{project.year}</span>
+        {project.link && (
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="ml-auto text-sm font-medium text-(--color-accent) hover:text-(--color-accent-hover)"
+          >
+            Voir le site ↗
+          </a>
+        )}
+      </div>
+
+      {/* EDIT: project title */}
+      <h1 class="text-3xl font-semibold tracking-tight text-(--color-text-primary) md:text-4xl">
+        {project.title}
+      </h1>
+
+      {/* Tags */}
+      <div class="mt-4 flex flex-wrap gap-2">
+        {project.tags.map((tag) => <Tag label={tag} />)}
+      </div>
+    </header>
+
+    {/* Image */}
+    <div class="mb-10 overflow-hidden rounded-lg bg-(--color-bg-secondary)">
+      <img
+        src={project.image}
+        alt={project.title}
+        class="w-full object-cover"
+        loading="eager"
+        onerror={`this.src='https://placehold.co/1100x619/F0EFEB/9C9C96?text=${encodeURIComponent(project.title)}'`}
+      />
+    </div>
+
+    {/* Content */}
+    <div class="mx-auto max-w-2xl">
+      {/* EDIT: longDescription ou description */}
+      <p class="text-lg leading-relaxed text-(--color-text-secondary)">
+        {project.longDescription ?? project.description}
+      </p>
+
+      {/* Results block */}
+      {project.results && (
+        <div class="mt-8 rounded-md border-l-2 border-(--color-accent) bg-(--color-accent-light) px-5 py-4">
+          <p class="text-sm font-semibold uppercase tracking-widest text-(--color-text-muted)">
+            Résultats
+          </p>
+          <p class="mt-1 text-base font-medium text-(--color-text-primary)">
+            {/* EDIT: résultats */}
+            {project.results}
+          </p>
+        </div>
+      )}
+    </div>
+
+    {/* Other projects */}
+    {otherProjects.length > 0 && (
+      <section class="mt-20">
+        <h2 class="mb-8 text-xl font-semibold text-(--color-text-primary)">
+          Autres projets
+        </h2>
+        <div class="grid gap-6 md:grid-cols-3">
+          {otherProjects.map((p) => (
+            <ProjectCard project={p} />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <div class="mt-12">
+      <Button href="/#projets" variant="ghost">← Retour aux projets</Button>
+    </div>
+  </div>
+</BaseLayout>

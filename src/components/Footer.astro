@@ -1,0 +1,45 @@
+---
+import { SITE } from "@config/site"
+---
+
+<footer class="border-t border-(--color-border) bg-(--color-bg)">
+  <div class="mx-auto max-w-(--container-max) px-6 py-8">
+    <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
+      {/* Copyright */}
+      <p class="text-sm text-(--color-text-muted)">
+        © {new Date().getFullYear()} {SITE.name}
+      </p>
+
+      {/* Links */}
+      <div class="flex items-center gap-4">
+        {/* EDIT: liens sociaux */}
+        <a
+          href="https://linkedin.com/in/maximedaon"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sm text-(--color-text-muted) transition-colors hover:text-(--color-text-primary)"
+        >
+          LinkedIn
+        </a>
+        <a
+          href="https://github.com/maximedaon"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sm text-(--color-text-muted) transition-colors hover:text-(--color-text-primary)"
+        >
+          GitHub
+        </a>
+        {/* EDIT: email */}
+        <a
+          href="mailto:hello@maxime-daon.fr"
+          class="text-sm text-(--color-text-muted) transition-colors hover:text-(--color-text-primary)"
+        >
+          Email
+        </a>
+      </div>
+
+      {/* Made with */}
+      <p class="text-xs text-(--color-text-muted)">Fait avec Astro & Tailwind CSS</p>
+    </div>
+  </div>
+</footer>

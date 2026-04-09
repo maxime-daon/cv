@@ -1,0 +1,18 @@
+---
+/**
+ * Page index du blog.
+ * Prête à être branchée sur Sanity via getCollection() ou un client API.
+ */
+import BaseLayout from "@layouts/BaseLayout.astro"
+import Breadcrumb from "@components/Breadcrumb.astro"
+---
+
+<BaseLayout title="Blog" description="Les derniers articles du blog.">
+  <section class="mx-auto max-w-6xl px-4 py-12">
+    <Breadcrumb items={[{ name: "Blog", href: "/blog" }]} />
+    <h1 class="mb-8 text-3xl font-bold">Blog</h1>
+
+    <!-- Boucle d'articles à brancher ici -->
+    <p class="text-gray-600">Aucun article pour le moment.</p>
+  </section>
+</BaseLayout>

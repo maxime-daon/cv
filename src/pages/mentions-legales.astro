@@ -1,0 +1,32 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro"
+import Breadcrumb from "@components/Breadcrumb.astro"
+import { SITE } from "@config/site"
+---
+
+<BaseLayout title="Mentions légales" noindex>
+  <section class="mx-auto max-w-3xl px-4 py-12">
+    <Breadcrumb items={[{ name: "Mentions légales", href: "/mentions-legales" }]} />
+    <h1 class="mb-8 text-3xl font-bold">Mentions légales</h1>
+
+    <div class="prose prose-lg max-w-none">
+      <h2>Éditeur du site</h2>
+      <p>
+        {SITE.name}<br />
+        {SITE.author}<br />
+        <!-- Compléter : adresse, SIRET, etc. -->
+      </p>
+
+      <h2>Hébergement</h2>
+      <p>
+        <!-- Compléter : nom de l'hébergeur, adresse, contact -->
+      </p>
+
+      <h2>Propriété intellectuelle</h2>
+      <p>
+        L'ensemble du contenu de ce site (textes, images, vidéos) est protégé par le droit d'auteur.
+        Toute reproduction, même partielle, est interdite sans autorisation préalable.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

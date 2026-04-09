@@ -1,17 +1,26 @@
 ---
-
+import BaseLayout from "@layouts/BaseLayout.astro"
+import JsonLd from "@components/seo/JsonLd.astro"
+import { buildWebSite, buildOrganization } from "@lib/schema"
+import { SITE } from "@config/site"
+import Hero from "@components/sections/Hero.astro"
+import Projects from "@components/sections/Projects.astro"
+import Services from "@components/sections/Services.astro"
+import About from "@components/sections/About.astro"
+import Contact from "@components/sections/Contact.astro"
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Développeur Webflow & Traffic Manager" description={SITE.description}>
+  <JsonLd schema={buildWebSite()} />
+  <JsonLd schema={buildOrganization()} />
+
+  <Hero />
+
+  <Projects />
+
+  <Services />
+
+  <About />
+
+  <Contact />
+</BaseLayout>

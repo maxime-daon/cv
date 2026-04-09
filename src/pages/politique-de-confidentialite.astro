@@ -1,0 +1,39 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro"
+import Breadcrumb from "@components/Breadcrumb.astro"
+import { SITE } from "@config/site"
+---
+
+<BaseLayout title="Politique de confidentialité" noindex>
+  <section class="mx-auto max-w-3xl px-4 py-12">
+    <Breadcrumb items={[{ name: "Politique de confidentialité", href: "/politique-de-confidentialite" }]} />
+    <h1 class="mb-8 text-3xl font-bold">Politique de confidentialité</h1>
+
+    <div class="prose prose-lg max-w-none">
+      <h2>Collecte des données</h2>
+      <p>
+        <!-- Compléter : quelles données sont collectées, dans quel but -->
+      </p>
+
+      <h2>Utilisation des cookies</h2>
+      <p>
+        Ce site n'utilise aucun cookie tiers par défaut. Les cookies techniques
+        nécessaires au fonctionnement du site sont exemptés de consentement
+        conformément aux recommandations de la CNIL.
+      </p>
+
+      <h2>Vos droits</h2>
+      <p>
+        Conformément au RGPD, vous disposez d'un droit d'accès, de rectification,
+        de suppression et de portabilité de vos données. Pour exercer ces droits,
+        contactez-nous à l'adresse suivante :
+        <!-- Compléter : email de contact -->
+      </p>
+
+      <h2>Hébergement des données</h2>
+      <p>
+        <!-- Compléter : localisation des serveurs, sous-traitants -->
+      </p>
+    </div>
+  </section>
+</BaseLayout>
