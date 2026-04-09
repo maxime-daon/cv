@@ -12,7 +12,6 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky",
     "astro": "astro"
   },
   "lint-staged": {
