@@ -3,6 +3,9 @@ import BaseLayout from "@layouts/BaseLayout.astro"
 import Tag from "@components/ui/Tag.astro"
 import Button from "@components/ui/Button.astro"
 import ProjectCard from "@components/ui/ProjectCard.astro"
+import Breadcrumb from "@components/Breadcrumb.astro"
+import JsonLd from "@components/seo/JsonLd.astro"
+import { buildCreativeWork } from "@lib/schema"
 import { projects } from "@config/projects"
 import type { Project } from "../../types/index"
 
@@ -19,12 +22,21 @@ interface Props {
 
 const { project } = Astro.props
 
-// Other projects (up to 3, excluding current)
 const otherProjects = projects.filter((p) => p.slug !== project.slug).slice(0, 3)
+const projectSchema = buildCreativeWork({
+  title: project.title,
+  description: project.description,
+  url: Astro.url.pathname,
+  image: project.image,
+  client: project.client,
+  year: project.year,
+})
 ---
 
 <BaseLayout title={project.title} description={project.description}>
+  <JsonLd schema={projectSchema} />
   <div class="mx-auto max-w-(--container-max) px-6 py-12 md:py-16">
+    <Breadcrumb items={[{ name: "Projets", href: "/#projets" }, { name: project.title, href: Astro.url.pathname }]} />
     {/* Back link */}
     <a
       href="/#projets"

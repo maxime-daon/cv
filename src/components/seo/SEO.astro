@@ -17,7 +17,7 @@ const {
   description = SITE.description,
   ogImage = SITE.ogImage,
   noindex = false,
-  canonical = Astro.url.href,
+  canonical = `${SITE.url}${Astro.url.pathname}`,
   type = "website",
   publishedAt,
 } = Astro.props

@@ -48,6 +48,28 @@ export function buildBreadcrumb(items: { name: string; href: string }[]) {
   }
 }
 
+/** Schema JSON-LD CreativeWork — page projet */
+export function buildCreativeWork(project: {
+  title: string
+  description: string
+  url: string
+  image?: string
+  client?: string
+  year?: string | number
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: project.title,
+    description: project.description,
+    url: `${SITE.url}${project.url}`,
+    image: project.image?.startsWith("http") ? project.image : `${SITE.url}${project.image}`,
+    ...(project.client && { contributor: { "@type": "Organization", name: project.client } }),
+    ...(project.year && { dateCreated: String(project.year) }),
+    author: { "@type": "Person", name: SITE.author },
+  }
+}
+
 /** Schema JSON-LD Article — prêt pour le blog */
 export function buildArticle(post: {
   title: string
