@@ -35,7 +35,8 @@
     --font-mono: "JetBrains Mono", monospace;
 
     --section-gap: 6rem;
-    --container-max: 85svw;
+    --container-max: clamp(90svw, 85svw, 85svw);
+    
     --container-padding: 1.5rem;
 
     --radius-sm: 6px;
@@ -46,6 +47,7 @@
     --transition-fast: 150ms ease;
     --transition-base: 250ms ease;
   }
+  
 
   @media (prefers-color-scheme: dark) {
     :root {
