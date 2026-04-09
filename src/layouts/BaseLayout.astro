@@ -42,7 +42,7 @@ const { title, description, ogImage, noindex, class: className } = Astro.props
       Aller au contenu principal
     </a>
     <Nav />
-    <main id="main-content" class:list={["flex-1", className]}>
+    <main id="main-content" class="overflow-hidden" class:list={["flex-1", className]}>
       <slot />
     </main>
     <Footer />
