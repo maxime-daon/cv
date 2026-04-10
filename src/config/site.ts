@@ -7,4 +7,5 @@ export const SITE = {
   ogImage: "/og-default.jpg",
   twitterHandle: "@maximedaon",
   author: "Maxime Daon",
+  gtmId: "GTM-WK7LPP5F",
 } as const

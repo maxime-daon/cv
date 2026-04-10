@@ -1,7 +1,7 @@
 ---
 // CookieConsent — RGPD + Google Consent Mode V2 via GTM
-// Renseigner PUBLIC_GTM_ID dans .env (ex: GTM-XXXXXXX)
-const GTM_ID = import.meta.env.PUBLIC_GTM_ID ?? ""
+import { SITE } from "@config/site"
+const GTM_ID = SITE.gtmId
 ---
 
 {/*
