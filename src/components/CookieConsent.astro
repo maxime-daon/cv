@@ -4,24 +4,25 @@
 const GTM_ID = import.meta.env.PUBLIC_GTM_ID ?? ""
 ---
 
+{/*
+  1. Définir gtag + Consent Mode V2 defaults AVANT le snippet GTM.
+     GTM ne définit pas window.gtag — on le fait ici comme alias de dataLayer.push.
+*/}
+<script>
+  window.dataLayer = window.dataLayer || []
+  function gtag(...args: unknown[]) { window.dataLayer.push(args) }
+
+  gtag("consent", "default", {
+    analytics_storage:  "denied",
+    ad_storage:         "denied",
+    ad_user_data:       "denied",
+    ad_personalization: "denied",
+    wait_for_update:    500,
+  })
+</script>
+
 {GTM_ID && (
   <>
-    {/*
-      1. Consent Mode V2 — defaults AVANT le snippet GTM
-         GTM lit ces valeurs au démarrage pour toutes ses balises
-    */}
-    <script>
-      window.dataLayer = window.dataLayer || []
-      window.dataLayer.push({
-        event: 'default_consent',
-        analytics_storage:  'denied',
-        ad_storage:         'denied',
-        ad_user_data:       'denied',
-        ad_personalization: 'denied',
-        wait_for_update:    500,
-      })
-    </script>
-
     {/* 2. Snippet GTM standard */}
     <script is:inline define:vars={{ GTM_ID }}>
       ;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -30,6 +31,15 @@ const GTM_ID = import.meta.env.PUBLIC_GTM_ID ?? ""
       'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
       })(window,document,'script','dataLayer',GTM_ID)
     </script>
+
+    {/* 3. Noscript fallback GTM */}
+    <noscript>
+      <iframe
+        src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+        height="0" width="0"
+        style="display:none;visibility:hidden"
+      />
+    </noscript>
   </>
 )}
 
@@ -37,19 +47,29 @@ const GTM_ID = import.meta.env.PUBLIC_GTM_ID ?? ""
   import * as CookieConsent from "vanilla-cookieconsent"
   import "vanilla-cookieconsent/dist/cookieconsent.css"
 
-  function updateConsentMode(cookie: ReturnType<typeof CookieConsent.getCookie>) {
-    if (typeof window.gtag !== "function") return
-
+  function updateConsentMode(_cookie: ReturnType<typeof CookieConsent.getCookie>) {
     const analytics = CookieConsent.acceptedCategory("analytics")
     const marketing = CookieConsent.acceptedCategory("marketing")
 
-    window.gtag("consent", "update", {
+    // gtag est défini dans le script inline ci-dessus
+    ;(window as unknown as { gtag: (...args: unknown[]) => void }).gtag("consent", "update", {
       analytics_storage:  analytics ? "granted" : "denied",
       ad_storage:         marketing ? "granted" : "denied",
       ad_user_data:       marketing ? "granted" : "denied",
       ad_personalization: marketing ? "granted" : "denied",
     })
   }
+
+  // Astro View Transitions : GTM ne détecte pas les navigations SPA automatiquement.
+  // On pousse un événement custom sur chaque swap de page (hors chargement initial).
+  document.addEventListener("astro:after-swap", () => {
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push({
+      event: "astro_page_view",
+      page_path: window.location.pathname,
+      page_title: document.title,
+    })
+  })
 
   CookieConsent.run({
 
